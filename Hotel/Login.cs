@@ -23,7 +23,6 @@ namespace Hotel
 
         }
 
-        
         // Box de agrupacion
         private void groupBox1_Enter(object sender, EventArgs e)
         {
