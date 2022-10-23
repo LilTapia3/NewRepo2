@@ -31,7 +31,6 @@
             this.Inicio = new System.Windows.Forms.Button();
             this.Checkin = new System.Windows.Forms.Button();
             this.Checkout = new System.Windows.Forms.Button();
-            this.Ventas = new System.Windows.Forms.Button();
             this.Logout = new System.Windows.Forms.Button();
             this.panel1 = new System.Windows.Forms.Panel();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
@@ -72,16 +71,6 @@
             this.Checkout.Text = "Check-out";
             this.Checkout.UseVisualStyleBackColor = true;
             this.Checkout.Click += new System.EventHandler(this.Checkout_Click);
-            // 
-            // Ventas
-            // 
-            this.Ventas.Location = new System.Drawing.Point(13, 192);
-            this.Ventas.Name = "Ventas";
-            this.Ventas.Size = new System.Drawing.Size(122, 45);
-            this.Ventas.TabIndex = 3;
-            this.Ventas.Text = "Ventas";
-            this.Ventas.UseVisualStyleBackColor = true;
-            this.Ventas.Click += new System.EventHandler(this.Ventas_Click);
             // 
             // Logout
             // 
@@ -125,7 +114,6 @@
             this.ClientSize = new System.Drawing.Size(1184, 681);
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.Logout);
-            this.Controls.Add(this.Ventas);
             this.Controls.Add(this.Checkout);
             this.Controls.Add(this.Checkin);
             this.Controls.Add(this.Inicio);
@@ -144,7 +132,6 @@
         private System.Windows.Forms.Button Inicio;
         private System.Windows.Forms.Button Checkin;
         private System.Windows.Forms.Button Checkout;
-        private System.Windows.Forms.Button Ventas;
         private System.Windows.Forms.Button Logout;
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.PictureBox pictureBox1;

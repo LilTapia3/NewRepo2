@@ -56,11 +56,5 @@ namespace Hotel
             this.Close();
         }
 
-        private void Ventas_Click(object sender, EventArgs e)
-        {
-            Ventas frm5 = new Ventas();
-            frm5.Show();
-            this.Close();
-        }
     }
 }
