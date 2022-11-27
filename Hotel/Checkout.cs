@@ -83,7 +83,7 @@ namespace Hotel
                 MessageBox.Show("error" + ex.ToString());
                 throw;
             }
-            String nombre = "SELECT date_format(check_in,'%Y-%m-%d') as check_in,concat(usuario.nombre_usuario, ' ' , usuario.apellido_usuario) as nombre,usuario.rut_usuario as rut, date_format(reserva.Fech_Entr, '%Y-%m-%d') as fecha_entrada , habitacion.numero_hab as numero_hab, servicios.nombre_serv as servicios FROM reserva INNER JOIN usuario on reserva.id_usuario = usuario.id_usuario INNER JOIN habitacion on reserva.id_habitacion = habitacion.id_habitacion INNER JOIN servicios on reserva.id_servicio = servicios.id_servicio  WHERE usuario.rut_usuario= '" + usuario + "';";
+            String nombre = "SELECT date_format(check_in,'%Y-%m-%d') as check_in, concat(usuario.nombre_usuario, ' ' , usuario.apellido_usuario) as nombre, usuario.rut_usuario as rut, habitacion.numero_hab as numero_hab, servicios.nombre_serv as servicios  FROM RESERVA INNER JOIN usuario ON reserva.id_usuario = usuario.id_usuario INNER JOIN habitacion ON reserva.id_habitacion = habitacion.id_habitacion INNER JOIN servicios on reserva.id_servicio = servicios.id_servicio WHERE usuario.rut_usuario = '" + usuario + " ' AND reserva.estado_reserva = 'Ingresado' ;";
             MySqlCommand cmd = new MySqlCommand(nombre, con);
             MySqlDataReader read = cmd.ExecuteReader();
             if (read.Read())
@@ -93,7 +93,6 @@ namespace Hotel
                 textBox2.Text = rut.Text;
                 textBox3.Text = read["servicios"].ToString();
                 textBox4.Text = read["numero_hab"].ToString();
-                textBox5.Text = read["fecha_entrada"].ToString();
                 textBox6.Text = read["check_in"].ToString();
 
             }
@@ -121,7 +120,7 @@ namespace Hotel
                 MessageBox.Show("error" + ex.ToString());
                 throw;
             }
-            String update = "UPDATE reserva INNER JOIN usuario on reserva.id_usuario = usuario.id_usuario SET reserva.Estado_reserva = 'Terminado', reserva.check_out ='"+checkout+"' WHERE usuario.rut_usuario ='"+usuario+"';";
+            String update = "UPDATE reserva INNER JOIN usuario on reserva.id_usuario = usuario.id_usuario SET reserva.Estado_reserva = 'Terminado', reserva.check_out ='"+checkout+"' WHERE usuario.rut_usuario ='"+usuario+ "' and  reserva.Estado_reserva = 'Ingresado';";
             MySqlCommand cmd2 = new MySqlCommand(update, con2);
             //Se retiran los datos de la Query en la variable Read
             MySqlDataReader read2 = cmd2.ExecuteReader();
@@ -151,7 +150,7 @@ namespace Hotel
 
             }
 
-            string check_compr = "SELECT concat(usuario.nombre_usuario, ' ' , usuario.apellido_usuario) as nombreCompleto ,reserva.dias_estadia as dias_estadia, date_format(reserva.check_out, '%Y-%m-%d') as fecha_egreso ,date_format(reserva.check_in, '%Y-%m-%d') as fecha_ingreso , habitacion.numero_hab as habitacion, departamento.nombre_dep as hotel,servicios.nombre_serv as SERVICIOS FROM reserva INNER JOIN usuario on reserva.id_usuario = usuario.id_usuario INNER JOIN habitacion on reserva.id_habitacion = habitacion.id_habitacion INNER JOIN servicios on reserva.id_servicio = servicios.id_servicio  INNER JOIN departamento on habitacion.id_departamento = departamento.id_departamento WHERE usuario.rut_usuario = '" + usuario + "'; ";
+            string check_compr = "SELECT concat(usuario.nombre_usuario, ' ' , usuario.apellido_usuario) as nombreCompleto ,reserva.dias_estadia as dias_estadia, date_format(reserva.check_out, '%Y-%m-%d') as fecha_egreso ,date_format(reserva.check_in, '%Y-%m-%d') as fecha_ingreso , habitacion.numero_hab as habitacion, departamento.nombre_dep as hotel,servicios.nombre_serv as SERVICIOS FROM reserva INNER JOIN usuario on reserva.id_usuario = usuario.id_usuario INNER JOIN habitacion on reserva.id_habitacion = habitacion.id_habitacion INNER JOIN servicios on reserva.id_servicio = servicios.id_servicio  INNER JOIN departamento on habitacion.id_departamento = departamento.id_departamento WHERE usuario.rut_usuario = '" + usuario + "' and reserva.estado_reserva = 'Terminado'; ";
             MySqlConnection con3 = new MySqlConnection("server = 127.0.0.1; Database = turismo; User iD = root; Password=;");
             con3.Open();
             MySqlCommand c = new MySqlCommand(check_compr, con3);
