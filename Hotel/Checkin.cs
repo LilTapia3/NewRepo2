@@ -75,8 +75,8 @@ namespace Hotel
         private void Buscador_Click(object sender, EventArgs e)
         {
             //Conexion con bd
-            string usuario;
-            usuario = rut.Text;
+            string id_reserva;
+            id_reserva = rut.Text;
             MySqlConnection con = new MySqlConnection("server = 127.0.0.1; Database = turismo; User iD = root; Password=;");
             try
             {
@@ -90,7 +90,7 @@ namespace Hotel
                 throw;
             }
             //Se establece la Query a realizarse en la bd
-            String nombre = "SELECT concat(usuario.nombre_usuario, ' ' , usuario.apellido_usuario) as nombre, usuario.rut_usuario as rut, habitacion.numero_hab as numero_hab, servicios.nombre_serv as servicios  FROM RESERVA INNER JOIN usuario ON reserva.id_usuario = usuario.id_usuario INNER JOIN habitacion ON reserva.id_habitacion = habitacion.id_habitacion INNER JOIN servicios on reserva.id_servicio = servicios.id_servicio WHERE usuario.rut_usuario = '" + usuario+" ' AND reserva.estado_reserva = 'Pendiente' ;";
+            String nombre = "SELECT reserva.abono_reserva as reservabono, reserva.total_reserva as total ,concat(usuario.nombre_usuario, ' ' , usuario.apellido_usuario) as nombre, usuario.rut_usuario as rut, habitacion.numero_hab as numero_hab, Concat(\"Servicio contratados:\", ' ', servicios.nombre_serv, ', tour contratado: ', tour.nombre_tour)  as servicios \r\nFROM RESERVA INNER JOIN usuario ON reserva.id_usuario = usuario.id_usuario INNER JOIN habitacion ON reserva.id_habitacion = habitacion.id_habitacion INNER JOIN servicios on reserva.id_servicio = servicios.id_servicio INNER JOIN transporte ON reserva.id_transporte = reserva.id_transporte INNER JOIN tour ON reserva.id_tour = tour.id_tour WHERE reserva.id_reserva =" + id_reserva + " and reserva.estado_reserva = 'Pendiente' GROUP by usuario.nombre_usuario, usuario.apellido_usuario, usuario.rut_usuario;";
             //Se establece la comunicacion con la bd y posteriormente la consulta
             MySqlCommand cmd = new MySqlCommand(nombre, con);
             //Se retiran los datos de la Query en la variable Read
@@ -101,7 +101,9 @@ namespace Hotel
                 textBox1.Text = read["nombre"].ToString();
                 textBox2.Text = rut.Text;
                 textBox3.Text = read["servicios"].ToString();
-                textBox4.Text = read["numero_hab"].ToString();                                              
+                textBox4.Text = read["numero_hab"].ToString();
+                Abono_ini.Text = read["reservabono"].ToString();
+                Total.Text = read["Total"].ToString();
             }
             else
             {
@@ -122,10 +124,12 @@ namespace Hotel
 
         private void Guardar_Click(object sender, EventArgs e)
         {
-            string usuario;
-            usuario = rut.Text;
+            string id_reserva;
+            id_reserva = rut.Text;
             string checkin;
             checkin = dateTimePicker2.Text;
+            string Abono;
+            Abono = Abono_check.Text;
             MySqlConnection con2 = new MySqlConnection("server = 127.0.0.1; Database = turismo; User iD = root; Password=;");
             try
             {
@@ -138,7 +142,7 @@ namespace Hotel
                 MessageBox.Show("error" + ex.ToString());
                 throw;
             }
-            String update = "UPDATE reserva INNER JOIN usuario on reserva.id_usuario = usuario.id_usuario SET reserva.Estado_reserva = 'Ingresado', reserva.check_in = '"+checkin+"' WHERE usuario.rut_usuario = '"+usuario+ "' and reserva.estado_reserva = 'Pendiente'; ";
+            String update = "UPDATE reserva SET reserva.Estado_reserva = 'Ingresado', reserva.check_in = '"+checkin+"', reserva.abono_checkin ='"+Abono+"' WHERE reserva.id_reserva = 107;";
             MySqlCommand cmd2 = new MySqlCommand(update, con2);
             //Se retiran los datos de la Query en la variable Read
             MySqlDataReader read2 = cmd2.ExecuteReader();
@@ -148,8 +152,8 @@ namespace Hotel
 
         private void ReservarPDF()
         {
-            string usuario;
-            usuario = rut.Text;
+            string reserva;
+            reserva = rut.Text;
             PdfWriter pdfWriter = new PdfWriter("CheckinCompr.pdf");
             PdfDocument pdf = new PdfDocument(pdfWriter);
             Document documento = new Document(pdf, PageSize.A4);
@@ -158,8 +162,8 @@ namespace Hotel
             PdfFont fontColumnas = PdfFontFactory.CreateFont(StandardFonts.HELVETICA_BOLD);
             PdfFont fontContenido = PdfFontFactory.CreateFont(StandardFonts.HELVETICA);
             var parrafo = new Paragraph("CheckIn de: " + textBox1);
-            string[] columnas = { "Nombre", "Fecha ingreso", "Cantidad dias", "Habitacion", "Hotel", "Servicios" };
-            float[] tamanios = { 4, 4, 2, 2, 6, 10 };
+            string[] columnas = { "Nombre", "Fecha ingreso","Abono en check-in", "Abono de reserva" ,"Total" , "Habitacion", "Servicios" };
+            float[] tamanios = { 4, 4, 4, 4, 4, 2, 10 };
             Table tabla = new Table(UnitValue.CreatePercentArray(tamanios));
             tabla.SetWidth(UnitValue.CreatePercentValue(100));
             foreach (string columna in columnas)
@@ -168,7 +172,7 @@ namespace Hotel
 
             }
 
-            string check_compr = "SELECT concat(usuario.nombre_usuario, ' ' , usuario.apellido_usuario) as nombreCompleto ,reserva.dias_estadia as dias_estadia, date_format(reserva.check_in, '%Y-%m-%d') as fecha_ingreso , habitacion.numero_hab as habitacion, departamento.nombre_dep as hotel,servicios.nombre_serv as SERVICIOS FROM reserva INNER JOIN usuario on reserva.id_usuario = usuario.id_usuario INNER JOIN habitacion on reserva.id_habitacion = habitacion.id_habitacion INNER JOIN servicios on reserva.id_servicio = servicios.id_servicio  INNER JOIN departamento on habitacion.id_departamento = departamento.id_departamento WHERE usuario.rut_usuario = '"+ usuario + "'  and  reserva.Estado_reserva = 'Ingresado'; ";
+            string check_compr = "SELECT reserva.abono_checkin as checkinabono, reserva.abono_reserva as reservabono, reserva.total_reserva as total ,concat(usuario.nombre_usuario, ' ' , usuario.apellido_usuario) as nombreCompleto, reserva.check_in as fecha_ingreso ,habitacion.numero_hab as numero_hab, Concat('Servicio contratados:', ' ', servicios.nombre_serv, ', tour contratado: ', tour.nombre_tour)  as servicios FROM RESERVA INNER JOIN usuario ON reserva.id_usuario = usuario.id_usuario INNER JOIN  habitacion ON reserva.id_habitacion = habitacion.id_habitacion INNER JOIN servicios on reserva.id_servicio = servicios.id_servicio INNER JOIN transporte ON reserva.id_transporte = reserva.id_transporte INNER JOIN tour ON reserva.id_tour = tour.id_tour WHERE reserva.id_reserva = "+ reserva +" and reserva.estado_reserva = 'Ingresado' GROUP by usuario.nombre_usuario, usuario.apellido_usuario, usuario.rut_usuario;";
             MySqlConnection con3 = new MySqlConnection("server = 127.0.0.1; Database = turismo; User iD = root; Password=;");
             con3.Open();
             MySqlCommand c = new MySqlCommand(check_compr, con3);
@@ -181,10 +185,11 @@ namespace Hotel
             {
                 tabla.AddCell(new Cell().Add(new Paragraph(reader3["nombreCompleto"].ToString()).SetFont(fontContenido)));
                 tabla.AddCell(new Cell().Add(new Paragraph(reader3["fecha_ingreso"].ToString()).SetFont(fontContenido)));
-                tabla.AddCell(new Cell().Add(new Paragraph(reader3["dias_estadia"].ToString()).SetFont(fontContenido)));
-                tabla.AddCell(new Cell().Add(new Paragraph(reader3["habitacion"].ToString()).SetFont(fontContenido)));
-                tabla.AddCell(new Cell().Add(new Paragraph(reader3["hotel"].ToString()).SetFont(fontContenido)));
-                tabla.AddCell(new Cell().Add(new Paragraph(reader3["SERVICIOS"].ToString()).SetFont(fontContenido)));
+                tabla.AddCell(new Cell().Add(new Paragraph(reader3["checkinabono"].ToString()).SetFont(fontContenido)));
+                tabla.AddCell(new Cell().Add(new Paragraph(reader3["reservabono"].ToString()).SetFont(fontContenido)));
+                tabla.AddCell(new Cell().Add(new Paragraph(reader3["total"].ToString()).SetFont(fontContenido)));
+                tabla.AddCell(new Cell().Add(new Paragraph(reader3["numero_hab"].ToString()).SetFont(fontContenido)));
+                tabla.AddCell(new Cell().Add(new Paragraph(reader3["servicios"].ToString()).SetFont(fontContenido)));
             }
             documento.Add(tabla);
             documento.Add(new Paragraph(""));

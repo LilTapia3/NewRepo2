@@ -49,6 +49,12 @@
             this.Checkout = new System.Windows.Forms.Button();
             this.button1 = new System.Windows.Forms.Button();
             this.Inicio = new System.Windows.Forms.Button();
+            this.label3 = new System.Windows.Forms.Label();
+            this.Abono_check = new System.Windows.Forms.TextBox();
+            this.label6 = new System.Windows.Forms.Label();
+            this.label8 = new System.Windows.Forms.Label();
+            this.Abono_ini = new System.Windows.Forms.TextBox();
+            this.Total = new System.Windows.Forms.TextBox();
             this.panel1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox1.SuspendLayout();
@@ -72,6 +78,12 @@
             // groupBox2
             // 
             this.groupBox2.BackColor = System.Drawing.SystemColors.ActiveCaption;
+            this.groupBox2.Controls.Add(this.Total);
+            this.groupBox2.Controls.Add(this.Abono_ini);
+            this.groupBox2.Controls.Add(this.label8);
+            this.groupBox2.Controls.Add(this.label6);
+            this.groupBox2.Controls.Add(this.Abono_check);
+            this.groupBox2.Controls.Add(this.label3);
             this.groupBox2.Controls.Add(this.textBox3);
             this.groupBox2.Controls.Add(this.dateTimePicker2);
             this.groupBox2.Controls.Add(this.textBox4);
@@ -91,10 +103,12 @@
             // 
             // textBox3
             // 
+            this.textBox3.Cursor = System.Windows.Forms.Cursors.IBeam;
             this.textBox3.Enabled = false;
             this.textBox3.Location = new System.Drawing.Point(604, 185);
+            this.textBox3.Multiline = true;
             this.textBox3.Name = "textBox3";
-            this.textBox3.Size = new System.Drawing.Size(100, 20);
+            this.textBox3.Size = new System.Drawing.Size(184, 70);
             this.textBox3.TabIndex = 14;
             // 
             // dateTimePicker2
@@ -215,11 +229,11 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(227, 34);
+            this.label1.Location = new System.Drawing.Point(235, 34);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(115, 13);
+            this.label1.Size = new System.Drawing.Size(97, 13);
             this.label1.TabIndex = 0;
-            this.label1.Text = "RUT O PASAPORTE: ";
+            this.label1.Text = "Numero de reserva";
             this.label1.Click += new System.EventHandler(this.label1_Click);
             // 
             // rut
@@ -277,6 +291,56 @@
             this.Inicio.UseVisualStyleBackColor = false;
             this.Inicio.Click += new System.EventHandler(this.Inicio_Click);
             // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(114, 188);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(82, 13);
+            this.label3.TabIndex = 15;
+            this.label3.Text = "Abono check in";
+            // 
+            // Abono_check
+            // 
+            this.Abono_check.Location = new System.Drawing.Point(210, 188);
+            this.Abono_check.Name = "Abono_check";
+            this.Abono_check.Size = new System.Drawing.Size(100, 20);
+            this.Abono_check.TabIndex = 16;
+            // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Location = new System.Drawing.Point(117, 291);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(60, 13);
+            this.label6.TabIndex = 17;
+            this.label6.Text = "Precio total";
+            // 
+            // label8
+            // 
+            this.label8.AutoSize = true;
+            this.label8.Location = new System.Drawing.Point(117, 242);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(67, 13);
+            this.label8.TabIndex = 18;
+            this.label8.Text = "Abono inicial";
+            // 
+            // Abono_ini
+            // 
+            this.Abono_ini.Enabled = false;
+            this.Abono_ini.Location = new System.Drawing.Point(210, 242);
+            this.Abono_ini.Name = "Abono_ini";
+            this.Abono_ini.Size = new System.Drawing.Size(100, 20);
+            this.Abono_ini.TabIndex = 19;
+            // 
+            // Total
+            // 
+            this.Total.Enabled = false;
+            this.Total.Location = new System.Drawing.Point(210, 291);
+            this.Total.Name = "Total";
+            this.Total.Size = new System.Drawing.Size(100, 20);
+            this.Total.TabIndex = 20;
+            // 
             // Checkin
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -291,6 +355,7 @@
             this.MaximizeBox = false;
             this.Name = "Checkin";
             this.ShowInTaskbar = false;
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Checkin";
             this.panel1.ResumeLayout(false);
             this.groupBox2.ResumeLayout(false);
@@ -325,5 +390,11 @@
         private System.Windows.Forms.Button Guardar;
         private System.Windows.Forms.TextBox textBox3;
         internal System.Windows.Forms.DateTimePicker dateTimePicker2;
+        private System.Windows.Forms.TextBox Abono_check;
+        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.Label label8;
+        private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.TextBox Total;
+        private System.Windows.Forms.TextBox Abono_ini;
     }
 }
